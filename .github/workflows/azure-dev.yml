@@ -128,14 +128,21 @@ jobs:
         with:
           node-version: 18
 
-      - name: Log in with Azure (Federated Credentials)
-        if: ${{ env.AZURE_CLIENT_ID != '' }}
-        run: |
-          azd auth login `
-            --client-id "$Env:AZURE_CLIENT_ID" `
-            --federated-credential-provider "github" `
-            --tenant-id "$Env:AZURE_TENANT_ID"
-        shell: pwsh
+#      - name: Log in with Azure (Federated Credentials)
+ #       if: ${{ env.AZURE_CLIENT_ID != '' }}
+  #      run: |
+   #       azd auth login `
+    #        --client-id "$Env:AZURE_CLIENT_ID" `
+     #       --federated-credential-provider "github" `
+      #      --tenant-id "$Env:AZURE_TENANT_ID"
+       # shell: pwsh
+
+      - name: Azure Login with Managed Identity
+        uses: azure/login@v1
+        with:
+          client-id: 9f3057ee-6885-4c6c-b1ca-d2e50f19b42a  # UAMI Client ID
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
 
       - name: Log in with Azure (Client Credentials)
         if: ${{ env.AZURE_CREDENTIALS != '' }}
