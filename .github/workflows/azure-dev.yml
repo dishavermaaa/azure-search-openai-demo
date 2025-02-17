@@ -123,6 +123,12 @@ jobs:
       - name: Install azd
         uses: Azure/setup-azd@v2.1.0
 
+      - name: Set up Azure CLI
+        uses: azure/setup-cli@v1
+        with:
+         version: latest
+
+
       - name: Install Nodejs
         uses: actions/setup-node@v4
         with:
