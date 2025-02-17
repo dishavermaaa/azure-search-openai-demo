@@ -161,7 +161,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
-            --tag ghcr.io/your-repo-name/your-app:latest \
+            --tag ghcr.io/dishavermaa/azure-search-openai-demo:latest \
             --file Dockerfile \
             --push .
             
