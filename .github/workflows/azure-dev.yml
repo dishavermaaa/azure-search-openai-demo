@@ -124,10 +124,7 @@ jobs:
         uses: Azure/setup-azd@v2.1.0
 
       - name: Set up Azure CLI
-        uses: azure/setup-cli@v1
-        with:
-         version: latest
-
+        uses: azure/setup-azure@v1
 
       - name: Install Nodejs
         uses: actions/setup-node@v4
