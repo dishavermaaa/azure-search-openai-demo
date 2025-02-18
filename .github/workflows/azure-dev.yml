@@ -155,6 +155,10 @@ jobs:
         shell: pwsh
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Debug Subscription ID
+        run: |
+          echo "Subscription ID: $AZURE_SUBSCRIPTION_ID"
 
       - name: Set Azure Subscription
         run: |
