@@ -136,12 +136,12 @@ jobs:
 
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
+        shell: pwsh
         run: |
-         azd auth login `
-         --client-id "$Env:AZURE_CLIENT_ID" `
-         --federated-credential-provider "github" `
-         --tenant-id "$Env:AZURE_TENANT_ID"
-         shell: pwsh
+          azd auth login `
+          --client-id "$Env:AZURE_CLIENT_ID" `
+          --federated-credential-provider "github" `
+          --tenant-id "$Env:AZURE_TENANT_ID"
 
       - name: Log in with Azure (Client Credentials)
         if: ${{ env.AZURE_CREDENTIALS != '' }}
@@ -167,14 +167,12 @@ jobs:
           AZD_INITIAL_ENVIRONMENT_CONFIG: ${{ secrets.AZD_INITIAL_ENVIRONMENT_CONFIG }}
           AZURE_SERVER_APP_SECRET: ${{ secrets.AZURE_SERVER_APP_SECRET }}
           AZURE_CLIENT_APP_SECRET: ${{ secrets.AZURE_CLIENT_APP_SECRET }}
+          
       - name: Debug OIDC Token
         run: |
           echo "Retrieving OIDC token..."
-          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \ "$ACTIONS_ID_TOKEN_REQUEST_URL"
-        env:
-          ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ steps.auth.outputs.id_token }}
-          ACTIONS_ID_TOKEN_REQUEST_URL: ${{ steps.auth.outputs.token_url }}
- 
+          curl -H "Authorization: bearer $(curl -s $ACTIONS_ID_TOKEN_REQUEST_URL | jq -r .value)" "$ACTIONS_ID_TOKEN_REQUEST_URL"
+
       - name: Build and Push Docker Image
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
